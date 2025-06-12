@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#D32F2F</color>
+    <color name="colorAccent">#960018</color>
+
+    <color name="silver_tolerance">#C0C0C0</color>
+    <color name="gold_tolerance">#FFD700</color>
+    <color name="black">#000000</color>
+    <color name="brown">#804000</color>
+    <color name="red">#FF0000</color>
+    <color name="orange">#FF8000</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#00A550</color>
+    <color name="blue">#0000FF</color>
+    <color name="violet">#7F00FF</color>
+    <color name="gray">#808080</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="tan_resistor">#FDD9B5</color>
+    <color name="blue_resistor">#89CFF0</color>
+    <color name="not_found">#DCDCDC</color>
+    <color name="toast_color">#C8FF0000</color>
+</resources>

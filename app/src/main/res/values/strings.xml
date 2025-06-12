@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">VoicedResistor</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_three_band">Three bands</string>
+    <string name="action_four_band">Four bands</string>
+    <string name="action_five_band">Five bands</string>
+    <string name="voice_search">Tap to Search</string>
+    <string name="action_information">Information</string>
+    <string name="help_message">Welcome to VoicedResistor, allowing you to search for resistor color codes with voice recognition.\n\nWhen searching by resistor color code, start with the first significant figure and end with the multiplier or tolerance band. \n\nWhen searching for a color code from the resistor value, give the value with the tolerance, if available, and without abbreviations. When searching values lower than 10Ω, omit the units for more accurate detection.</string>
+    <string name="ok">OK</string>
+    <string name="non_standard">\u2717 Not a standard value</string>
+    <string name="standard">\u2713 Standard value</string>
+    <string name="audio_error"><b>Audio error</b>\nError recording audio. Please check microphone settings and try again.</string>
+    <string name="network_error"><b>Network error</b>\nError accessing the Internet. Please check Internet connection and try again.</string>
+    <string name="network_timeout_error"><b>Network timeout</b>\nNetwork operation timed out. Please check Internet connection and try again.</string>
+    <string name="permissions_error"><b>Insufficient permissions error</b>\nNo permission to record audio. Please enable permission to continue.</string>
+    <string name="no_match_error"><b>No match found</b>\nService provided no match. Please try again, and speak clearly and naturally.</string>
+    <string name="recogniser_busy_error"><b>Speech recogniser busy</b>\nService is busy at the moment. Please try again.</string>
+    <string name="server_error"><b>Server error</b>\nServer error code received. Please try again.</string>
+    <string name="speech_timeout_error"><b>Speech timeout error</b>\nNo speech input found. Please try again, and speak clearly and naturally.</string>
+    <string name="invalid_input"><b>Invalid input</b>\nInput was not a valid color or value. Please give all the color bands or the correct value.</string>
+    <string name="invalid_tolerance_band"><b>Invalid tolerance band</b>\nRecognised tolerance band color is invalid.</string>
+    <string name="unknown_error"><b>Unknown error</b>\nYou\'re guess is as good as mine. Please try again.</string>
+    <string name="search_not_installed"><b>Google Voice Search not installed</b>\nPlease install Google Voice Search from the Play Store.</string>
+</resources>
