@@ -10,8 +10,8 @@
     <ImageView android:id="@+id/errorImage"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
+        android:contentDescription="@string/descriptive_representation_of_an_error"
         android:src="@drawable/ic_error_outline_white_36dp"
-        android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"/>
 
     <TextView android:id="@+id/errorText"

@@ -5,9 +5,10 @@ package com.dieter.voiceofresistance;
 
 // TODO possible problems: permissions
 
+import static android.speech.SpeechRecognizer.RESULTS_RECOGNITION;
+
 import android.Manifest;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -15,18 +16,17 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -43,16 +43,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import static android.speech.SpeechRecognizer.RESULTS_RECOGNITION;
-
 public class MainActivity extends AppCompatActivity {
 
     // Variable declarations
     // Number of bands on the resistor that will be set by the user. Default is 4.
     static int RES_BANDS = 4;
     static final int NOT_VALID_INPUT = 10;
-
-    static final String adMobID = "ca-app-pub-3524325879886985~6433314558";
 
     // Color value and multiplier constants for the resistor color code algorithm
     static final double BLACK_VALUE = 0;
@@ -99,13 +95,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initialize AdMob
-        MobileAds.initialize(this, adMobID);
+        MobileAds.initialize(this, initializationStatus -> {});
         AdView mAdView;
-        mAdView = (AdView) findViewById(R.id.adView);
+        mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         linkUiContent();
         checkPermissions();
@@ -147,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("RESISTOR_VALUE", valueText.getText().toString());
         outState.putInt("RES_BANDS", RES_BANDS);
@@ -171,7 +167,8 @@ public class MainActivity extends AppCompatActivity {
      * @param grantResults  permissions results
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             errorText.setText(R.string.permissions_error);
             errorToast.show();
@@ -189,9 +186,9 @@ public class MainActivity extends AppCompatActivity {
         animation.setRepeatCount(Animation.INFINITE);
         animation.setRepeatMode(Animation.REVERSE);
 
-        valueText = (TextView) findViewById(R.id.textView);
+        valueText = findViewById(R.id.textView);
         valueText.setText("---");
-        resistor = (LinearLayout) findViewById(R.id.resistor);
+        resistor = findViewById(R.id.resistor);
 
         createErrorToast();
 
@@ -200,13 +197,13 @@ public class MainActivity extends AppCompatActivity {
         int[] questionMarkIds = {R.id.question1, R.id.question2, R.id.question3, R.id.question4, R.id.question5};
 
         for (int spacerBandsId : spacerBandsIds) {
-            spacerBands.add((LinearLayout) findViewById(spacerBandsId));
+            spacerBands.add(findViewById(spacerBandsId));
         }
         for(int resistorBandViewId : resistorBandViewIds) {
-            resistorBands.add((LinearLayout) findViewById(resistorBandViewId));
+            resistorBands.add(findViewById(resistorBandViewId));
         }
         for(int questionMarkId : questionMarkIds) {
-            questionMarks.add((ImageView) findViewById(questionMarkId));
+            questionMarks.add(findViewById(questionMarkId));
         }
 
         resistorBands.get(4).setVisibility(View.GONE);
@@ -219,9 +216,9 @@ public class MainActivity extends AppCompatActivity {
     private void createErrorToast () {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.toast,
-                (ViewGroup) findViewById(R.id.toast_layout_root));
+                findViewById(R.id.toast_layout_root));
 
-        errorText = (TextView) layout.findViewById(R.id.errorText);
+        errorText = layout.findViewById(R.id.errorText);
 
         errorToast = new Toast(getApplicationContext());
         if(getResources().getConfiguration().orientation != 1) {
@@ -312,12 +309,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder helpPage = new AlertDialog.Builder(this);
             helpPage.setTitle(R.string.action_information)
                     .setMessage(R.string.help_message)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
+                    .setPositiveButton(R.string.ok, (dialog, which) -> {});
 
             AlertDialog helpPageDialog = helpPage.create();
             helpPageDialog.show();
@@ -452,7 +444,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (checkResultForValue(lowerCaseResultArray)) {
                         findColorCodeFromValue(lowerCaseResultArray);
                     } else {
-                        onError(NOT_VALID_INPUT);
+                        onError(SpeechRecognizer.ERROR_AUDIO);
                     }
                 }
 
@@ -695,12 +687,12 @@ public class MainActivity extends AppCompatActivity {
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         if (resistanceCalculated >= 1000 && resistanceCalculated < 1000000) {
             resistanceCalculated = resistanceCalculated/1000;
-            valueText.setText(decimalFormat.format(resistanceCalculated) + " k\u03A9" + toleranceValue);
+            valueText.setText(decimalFormat.format(resistanceCalculated) + " kΩ" + toleranceValue);
         } else if (resistanceCalculated >= 1000000) {
             resistanceCalculated = resistanceCalculated / 1000000;
-            valueText.setText(decimalFormat.format(resistanceCalculated) + " M\u03A9" + toleranceValue);
+            valueText.setText(decimalFormat.format(resistanceCalculated) + " MΩ" + toleranceValue);
         } else if (resistanceCalculated < 1000){
-            valueText.setText(decimalFormat.format(resistanceCalculated) + " \u03A9" + toleranceValue);
+            valueText.setText(decimalFormat.format(resistanceCalculated) + " Ω" + toleranceValue);
         }
     }
 
@@ -712,7 +704,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void findColorCodeFromValue(String[] valueToConvert) {
         String tolerance = checkResultForTolerance(valueToConvert);
-        if (!tolerance.equals("")) {
+        if (!tolerance.isEmpty()) {
             tolerance = " " + tolerance;
         } else {
             tolerance = " 20%"; // Default tolerance if no band is specified
@@ -724,8 +716,8 @@ public class MainActivity extends AppCompatActivity {
                 case "kilo":
                 case "k":
                     if (valueToConvert[0].matches("\\d+")){
-                        valueWithSuffix = Integer.parseInt(valueToConvert[0]) + " k\u03A9" + tolerance;
-                    } else valueWithSuffix = Double.parseDouble(valueToConvert[0]) + " k\u03A9" + tolerance;
+                        valueWithSuffix = Integer.parseInt(valueToConvert[0]) + " kΩ" + tolerance;
+                    } else valueWithSuffix = Double.parseDouble(valueToConvert[0]) + " kΩ" + tolerance;
 
                     valueText.setText(valueWithSuffix);
                     findColors(Double.parseDouble(valueToConvert[0]) * Math.pow(10, 3), tolerance);
@@ -734,8 +726,8 @@ public class MainActivity extends AppCompatActivity {
                 case "mega":
                 case "m":
                     if (valueToConvert[0].matches("\\d+")){
-                        valueWithSuffix = Integer.parseInt(valueToConvert[0]) + " M\u03A9" + tolerance;
-                    } else valueWithSuffix = Double.parseDouble(valueToConvert[0]) + " M\u03A9" + tolerance;
+                        valueWithSuffix = Integer.parseInt(valueToConvert[0]) + " MΩ" + tolerance;
+                    } else valueWithSuffix = Double.parseDouble(valueToConvert[0]) + " MΩ" + tolerance;
 
                     valueText.setText(valueWithSuffix);
                     findColors(Double.parseDouble(valueToConvert[0]) * Math.pow(10, 6), tolerance);
@@ -743,17 +735,17 @@ public class MainActivity extends AppCompatActivity {
 
                 default:
                     if (valueToConvert[0].matches("\\d+")){
-                        valueWithSuffix = Integer.parseInt(valueToConvert[0]) + " \u03A9" + tolerance;
-                    } else valueWithSuffix = Double.parseDouble(valueToConvert[0]) + " \u03A9" + tolerance;
+                        valueWithSuffix = Integer.parseInt(valueToConvert[0]) + " Ω" + tolerance;
+                    } else valueWithSuffix = Double.parseDouble(valueToConvert[0]) + " Ω" + tolerance;
 
                     valueText.setText(valueWithSuffix);
                     findColors(Double.parseDouble(valueToConvert[0]), tolerance);
             }
         } else {
             if (valueToConvert[0].matches("\\d+")){
-                valueWithSuffix = Integer.parseInt(valueToConvert[0]) + " \u03A9" + tolerance;
+                valueWithSuffix = Integer.parseInt(valueToConvert[0]) + " Ω" + tolerance;
             } else {
-                valueWithSuffix = Double.parseDouble(valueToConvert[0]) + " \u03A9" + tolerance;
+                valueWithSuffix = Double.parseDouble(valueToConvert[0]) + " Ω" + tolerance;
             }
             valueText.setText(valueWithSuffix);
             findColors(Double.parseDouble(valueToConvert[0]), tolerance);

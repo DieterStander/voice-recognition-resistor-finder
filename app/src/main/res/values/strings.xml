@@ -22,4 +22,5 @@
     <string name="invalid_tolerance_band"><b>Invalid tolerance band</b>\nRecognised tolerance band color is invalid.</string>
     <string name="unknown_error"><b>Unknown error</b>\nYou\'re guess is as good as mine. Please try again.</string>
     <string name="search_not_installed"><b>Google Voice Search not installed</b>\nPlease install Google Voice Search from the Play Store.</string>
+    <string name="descriptive_representation_of_an_error">Descriptive representation of an error</string>
 </resources>
